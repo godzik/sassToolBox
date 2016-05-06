@@ -1,19 +1,23 @@
-@mixin baseParam($position: relative, $width: 100%, $height: 100%) {
-     position: $position;
-     width: $width;
-     height: $height;
-}
-
 @mixin box-sizing($box-model) {
-  -webkit-box-sizing: $box-model; // Safari <= 5
-     -moz-box-sizing: $box-model; // Firefox <= 19
-          box-sizing: $box-model;
+  -webkit-box-sizing: $box-model;
+  -moz-box-sizing: $box-model;
+  box-sizing: $box-model;
 }
 
-@mixin fontFix {
-    -webkit-font-smoothing:antialiased;
-    -webkit-text-stroke:1px transparent;
-    text-shadow:rgba(0, 0, 0, .01) 0 0 1px;
+@mixin fluid() {
+  position: relative;
+  width: 90%;
+  margin: 0 auto;
+  @include min(lg) {
+    width: 100%;
+    max-width: $bWidth;
+  }
+}
+
+@mixin fontfix() {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke: 1px transparent;
+    text-shadow: rgba(0, 0, 0, .01) 0 0 1px;
 }
 
 @mixin font-size($sizeValue: 1.6) {
@@ -22,8 +26,16 @@
 }
 
 @mixin line-height($heightValue: 12 ){
-	line-height: $heightValue + px; //fallback for old browsers
-	line-height: (0.125 * $heightValue) + rem;
+  line-height: $heightValue + px;
+  line-height: (0.125 * $heightValue) + rem;
+}
+
+@mixin box-shadow($args...) {
+  -webkit-box-shadow: $args;
+  -moz-box-shadow: $args;
+  -ms-box-shadow: $args;
+  -o-box-shadow: $args;
+  box-shadow: $args;
 }
 
 @mixin transition($args...) {
@@ -34,33 +46,62 @@
   transition: $args;
 }
 
-@mixin bpMax($point) {
-  @if $point == large {
-    @media (max-width: 60em) { @content; }
-  }
-  @else if $point == medium {
-    @media (max-width: 40em) { @content; }
-  }
-  @else if $point == small {
-    @media (max-width: 30em)  { @content; }
-  }
+@mixin transform($args...) {
+  -webkit-transform: translate($args);
+  -moz-transform: translate($args);
+  -ms-transform: translate($args);
+  -o-transform: translate($args);
+  transform: translate($args);
 }
-@mixin bpMin($point) {
-  @if $point == small {
-    @media (min-width: 30em) { @content; }
+
+@mixin transformX($args...) {
+  -webkit-transform: translateX($args);
+  -moz-transform: translateX($args);
+  -ms-transform: translateX($args);
+  -o-transform: translateX($args);
+  transform: translateX($args);
+}
+
+@mixin transformY($args...) {
+  -webkit-transform: translateY($args);
+  -moz-transform: translateY($args);
+  -ms-transform: translateY($args);
+  -o-transform: translateY($args);
+  transform: translateY($args);
+}
+
+@mixin max($point) {
+  @media (max-width: $point) { @content; }
+}
+
+@mixin min($point) {
+  @if $point == xs {
+    @media (min-width: 480px) { @content; }
   }
-  @else if $point == medium {
-    @media (min-width: 40em) { @content; }
+  @else if $point == xm {
+    @media (min-width: 620px) { @content; }
   }
-  @else if $point == large {
-    @media (min-width: 60em)  { @content; }
+  @else if $point == sm {
+    @media (min-width: 768px) { @content; }
+  }
+  @else if $point == md {
+    @media (min-width: 992px) { @content; }
+  }
+  @else if $point == lg {
+    @media (min-width: 1200px)  { @content; }
+  }
+  @else if $point == xl {
+    @media (min-width: 1400px)  { @content; }
+  }
+  @else if $point == xxl {
+    @media (min-width: 1600px)  { @content; }
   }
 }
 
 @mixin opacity($opacity) {
   opacity: $opacity;
   $opacity-ie: $opacity * 100;
-  filter: alpha(opacity=$opacity-ie); //IE8
+  filter: alpha(opacity=$opacity-ie);
 }
 
 @mixin clearfix() {
@@ -77,35 +118,35 @@
 @mixin border-radius($radius) {
   -webkit-border-radius: $radius;
   border-radius: $radius;
-  background-clip: padding-box;  /* stops bg color from leaking outside the border: */
+  background-clip: padding-box;
 }
 @mixin border-top-radius($radius) {
   -webkit-border-top-right-radius: $radius;
   border-top-right-radius: $radius;
-   -webkit-border-top-left-radius: $radius;
-   border-top-left-radius: $radius;
-   background-clip: padding-box;
+  -webkit-border-top-left-radius: $radius;
+  border-top-left-radius: $radius;
+  background-clip: padding-box;
 }
 @mixin border-right-radius($radius) {
   -webkit-border-bottom-right-radius: $radius;
   border-bottom-right-radius: $radius;
-     -webkit-border-top-right-radius: $radius;
-     border-top-right-radius: $radius;
-     background-clip: padding-box;
+  -webkit-border-top-right-radius: $radius;
+  border-top-right-radius: $radius;
+  background-clip: padding-box;
 }
 @mixin border-bottom-radius($radius) {
   -webkit-border-bottom-right-radius: $radius;
   border-bottom-right-radius: $radius;
-   -webkit-border-bottom-left-radius: $radius;
-   border-bottom-left-radius: $radius;
-   background-clip: padding-box;
+  -webkit-border-bottom-left-radius: $radius;
+  border-bottom-left-radius: $radius;
+  background-clip: padding-box;
 }
 @mixin border-left-radius($radius) {
   -webkit-border-bottom-left-radius: $radius;
   border-bottom-left-radius: $radius;
-     -webkit-border-top-left-radius: $radius;
-     border-top-left-radius: $radius;
-     background-clip: padding-box;
+  -webkit-border-top-left-radius: $radius;
+  border-top-left-radius: $radius;
+  background-clip: padding-box;
 }
 
 @mixin center-block {
@@ -136,5 +177,22 @@
     border-top: $size solid transparent;
     border-bottom: $size solid transparent;
     border-right:$size solid $color;
+  }
+}
+
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
   }
 }
